@@ -13,7 +13,7 @@ public class StudentManager {
         students.add(s3);
 
         for(Student s : students){
-            System.out.println(s.getStudent());
+            System.out.println(s.toString());
         }
     }
 }

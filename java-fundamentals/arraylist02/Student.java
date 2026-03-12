@@ -27,7 +27,8 @@ public class Student {
     public int getAge(){return this.age;}
     public int getGrade(){return this.grade;}
 
-    public String getStudent(){
+    @Override
+    public String toString(){
         String resultado = name+" | "+"Age: "+age+" | Grade:"+grade;
         return resultado;
     }
