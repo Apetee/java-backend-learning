@@ -1,130 +1,140 @@
 package arraylist02;
 
-import streams.StudentAnalytics;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StudentManager {
     // This class is starting to behave like a service layer.
     // In a future Spring Boot app, logic like this usually lives in a service that talks to a repository.
+    private final ArrayList<Student> students = new ArrayList<>();
 
-    // This list is your in-memory data store for now.
-    // Later in backend development, this idea connects to a database table.
-    public StudentAnalytics analytics = new StudentAnalytics();
-    public ArrayList<Student> students = new ArrayList<>();
+    // Current rule: repeated names are allowed, but repeated ids are not.
+    public boolean addStudent(Student newStudent) {
+        if (newStudent == null || findStudent(newStudent.getId()) != null) {
+            return false;
+        }
 
-    // Review note: these methods are private now because main is inside the same class.
-    // If you want to use StudentManager from another class later, the main operations will likely need to be public.
-
-    // Purpose: add a new student to the collection.
-    // Next thing to think about: should two students with the same name be allowed?
-    // If not, this method will need a validation rule before adding.
-    public void addStudent(Student newStudent){students.add(newStudent);}
-    public void addStudents(ArrayList<Student> students){
-        this.students=students;
+        students.add(newStudent);
+        return true;
     }
 
-    // Purpose: remove a student by name.
-    // Current behavior: removes the first student whose name matches.
-    // Edge case to review: what should happen if the name does not exist?
-    // Design question: later you may want this method to report success or failure.
-    public void removeStudent(int id){
-        for(int i = 0; i < students.size(); i++){
-            if(students.get(i).getId() == id){
+    public void addStudents(List<Student> students) {
+        if (students == null) {
+            return;
+        }
+
+        for (Student student : students) {
+            addStudent(student);
+        }
+    }
+
+    // Purpose: remove a student by id.
+    public boolean removeStudent(int id) {
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).getId() == id) {
                 students.remove(i);
-                break;
+                return true;
             }
         }
+
+        return false;
     }
 
-    // Purpose: search for one student by name.
+    // Purpose: search for one student by id.
     // Current behavior: returns the Student if found, otherwise returns null.
-    // This is a good step toward backend thinking because searching data is a core service task.
-    // Later you can compare returning null vs throwing an exception vs using Optional.
-    public Student findStudent(int id){
-        for (Student s : students){
-            if (s.getId() == id){
-                return s;
+    public Student findStudent(int id) {
+        for (Student student : students) {
+            if (student.getId() == id) {
+                return student;
             }
         }
+
         return null;
     }
 
     // Purpose: calculate the average grade of all stored students.
-    // Important edge case: if the list is empty, dividing by zero will fail.
-    // Before moving on, make sure this method handles the empty list safely.
-    // Try to keep this method focused on calculating and returning the value.
-    public double averageGrade(){
-        double resultado=0;
-        if (students != null){
-            for(Student s : students){
-                resultado+=s.getGrade();
-            }
-        }else {
-            return 0;
+    // If the collection is empty, this returns 0.0 to avoid dividing by zero.
+    public double averageGrade() {
+        if (students.isEmpty()) {
+            return 0.0;
         }
 
-        return resultado/students.size();
+        double total = 0;
+        for (Student student : students) {
+            total += student.getGrade();
+        }
+
+        return total / students.size();
     }
 
-    // Good next methods to add in this step:
-    // - list all students
-    public void listAllStudents(){
-        analytics.getStudentNames(students);
-    }
-    // - update a student's grade by name
-    public void updateGrade(int id, double val){
-        //First check if student exist
-        Student student = this.findStudent(id);
-        //Once its exist added the val to the current grade
-        if ((student != null ) && (val > 0.0 && student.getGrade() > val)){
-            student.setGrade(val+student.getGrade());
-            System.out.println("Success!");
-        } else {
-            System.out.println("Student doesn't exist or update not necessary");
+    public void listAllStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No students available.");
+            return;
+        }
+
+        for (Student student : students) {
+            System.out.println(student);
         }
     }
-    // - count total students
-    public int totalStudents(){return students.size();}
 
-    public static void main(String[] args){
-        // 1. create students
+    // Purpose: increase the current grade by the received amount.
+    public boolean updateGrade(int id, double increment) {
+        Student student = findStudent(id);
+
+        if (student == null || increment <= 0.0) {
+            return false;
+        }
+
+        student.setGrade(student.getGrade() + increment);
+        return true;
+    }
+
+    public int totalStudents() {
+        return students.size();
+    }
+
+    public static void main(String[] args) {
         Student s1 = new Student("Ana", 20, 8, 1);
         Student s2 = new Student("Luis", 22, 7, 2);
-        Student s3 = new Student("Maria", 19,9, 3);
-        ArrayList<Student> students = new ArrayList<>();
-        students.add(s1);students.add(s2);students.add(s3);
+        Student s3 = new Student("Maria", 19, 9, 3);
+        Student s4 = new Student("Ana", 24, 8.5, 4);
 
-        // 2. add them to the manager
         StudentManager manager = new StudentManager();
-        manager.addStudents(students);
 
-        // 3. list all students
+        System.out.println("--- Add students ---");
+        System.out.println("Add Ana (id 1): " + manager.addStudent(s1));
+        System.out.println("Add Luis (id 2): " + manager.addStudent(s2));
+        System.out.println("Add Maria (id 3): " + manager.addStudent(s3));
+        System.out.println("Add Ana (id 4): " + manager.addStudent(s4));
+        System.out.println("Add duplicate id 1: " + manager.addStudent(new Student("Pedro", 18, 6.5, 1)));
+
+        System.out.println();
+        System.out.println("--- List all students ---");
         manager.listAllStudents();
 
-        // 4. search for one student
-        System.out.println("One student: " + manager.findStudent(s1.getId()) );
+        System.out.println();
+        System.out.println("--- Find one student ---");
+        System.out.println("Student with id 1: " + manager.findStudent(1));
+        System.out.println("Student with id 99: " + manager.findStudent(99));
 
-        // 5. update one student
-        System.out.println("Current grade of: " + s1.getName()+": "+s1.getGrade()+", plus 0.1");
-        manager.updateGrade(s1.getId(), 0.1);
-        System.out.println("After update: " + s1.getGrade());
+        System.out.println();
+        System.out.println("--- Update grade ---");
+        System.out.println("Before update: " + manager.findStudent(1));
+        System.out.println("Update id 1 by +0.1: " + manager.updateGrade(1, 0.1));
+        System.out.println("After update: " + manager.findStudent(1));
+        System.out.println("Update missing student: " + manager.updateGrade(99, 0.5));
+        System.out.println("Update with invalid increment: " + manager.updateGrade(1, -0.2));
 
-        // 6. remove one student
+        System.out.println();
+        System.out.println("--- Remove student ---");
+        System.out.println("Remove id 2: " + manager.removeStudent(2));
+        System.out.println("Remove missing id 99: " + manager.removeStudent(99));
         manager.listAllStudents();
-        System.out.println("Remove student:"+s2.getId());
-        manager.removeStudent(s2.getId());
-        manager.listAllStudents();
 
-        // 7. calculate the average grade
-        manager.addStudent(s2);
-        System.out.println("Average grade:"+manager.averageGrade());
-
-        // 8. test a case where the student does not exist
-        manager.updateGrade(123,0.5);
-
-
+        System.out.println();
+        System.out.println("--- Totals and average ---");
+        System.out.println("Total students: " + manager.totalStudents());
+        System.out.println("Average grade: " + manager.averageGrade());
     }
-
-
 }
