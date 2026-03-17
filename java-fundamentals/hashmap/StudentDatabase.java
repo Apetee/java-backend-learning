@@ -7,14 +7,14 @@ public class StudentDatabase {
     // Backend connection: this is similar to storing and querying records by an identifier.
 
     // Review note: the key is the student name, so names are treated as unique here.
-    // If the same name is added again, the previous value is replaced.
+    // If the same id is added again, the previous value is replaced.
     // Also remember that HashMap does not guarantee iteration order.
     private HashMap<Integer , Student> mapaEstudiantes = new HashMap<>();
 
     // Review note: adding with an existing key replaces the previous student.
     public void addStudent(Student newStudent){mapaEstudiantes.put(newStudent.getId(), newStudent);}
 
-    // Review note: because this structure is key-based, removing by name may feel more natural than removing by object.
+    // Review note: because this structure is key-based, removing by id may feel more natural than removing by object.
     public void removeStudent(Student newStudent){mapaEstudiantes.remove(newStudent.getId());}
 
     // If the student does not exist, this returns null.
