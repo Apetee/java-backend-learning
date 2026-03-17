@@ -137,11 +137,7 @@ public class StudentManager {
 
         System.out.println();
         System.out.println("--- List all students ---");
-        try {
-            manager.listAllStudents();
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
+        manager.listAllStudents();
 
         System.out.println();
         System.out.println("--- Find one student ---");
@@ -196,19 +192,11 @@ public class StudentManager {
         } catch (IllegalArgumentException | StudentNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        try {
-            manager.listAllStudents();
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
+        manager.listAllStudents();
 
         System.out.println();
         System.out.println("--- Totals and average ---");
         System.out.println("Total students: " + manager.totalStudents());
-        try {
-            System.out.println("Average grade: " + manager.averageGrade());
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
+        System.out.println("Average grade: " + manager.averageGrade());
     }
 }
