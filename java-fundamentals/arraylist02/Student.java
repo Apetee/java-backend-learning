@@ -27,10 +27,12 @@ public class Student {
     // Setters are a common place for future validation rules.
     // For example, later you may want to reject negative ages or grades outside an accepted range.
     public void setName(String name){
-        this.name= name;
+        if (name!="")
+            this.name= name;
     }
     public void setAge(int age) {
-        this.age = age;
+        if( age > 0)
+            this.age = age;
     }
     public void setGrade(double grade){
         this.grade=grade;

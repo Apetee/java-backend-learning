@@ -1,17 +1,22 @@
 package arraylist02;
 
+import exceptions.StudentNotFoundException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class StudentManager {
-    // This class is starting to behave like a service layer.
-    // In a future Spring Boot app, logic like this usually lives in a service that talks to a repository.
     private final ArrayList<Student> students = new ArrayList<>();
 
-    // Current rule: repeated names are allowed, but repeated ids are not.
     public boolean addStudent(Student newStudent) {
-        if (newStudent == null || findStudent(newStudent.getId()) != null) {
-            return false;
+        if (newStudent == null) {
+            throw new IllegalArgumentException("Student cannot be null.");
+        }
+
+        for (Student student : students) {
+            if (student.getId() == newStudent.getId()) {
+                throw new IllegalArgumentException("Student id already exists.");
+            }
         }
 
         students.add(newStudent);
@@ -19,8 +24,8 @@ public class StudentManager {
     }
 
     public void addStudents(List<Student> students) {
-        if (students == null) {
-            return;
+        if (students == null || students.isEmpty()) {
+            throw new IllegalArgumentException("Student list cannot be null or empty.");
         }
 
         for (Student student : students) {
@@ -28,32 +33,34 @@ public class StudentManager {
         }
     }
 
-    // Purpose: remove a student by id.
     public boolean removeStudent(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Id must be greater than zero.");
+        }
+
         for (int i = 0; i < students.size(); i++) {
             if (students.get(i).getId() == id) {
                 students.remove(i);
                 return true;
             }
         }
-
-        return false;
+        throw new StudentNotFoundException();
     }
 
-    // Purpose: search for one student by id.
-    // Current behavior: returns the Student if found, otherwise returns null.
     public Student findStudent(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Id must be greater than zero.");
+        }
+
         for (Student student : students) {
             if (student.getId() == id) {
                 return student;
             }
         }
 
-        return null;
+        throw new StudentNotFoundException();
     }
 
-    // Purpose: calculate the average grade of all stored students.
-    // If the collection is empty, this returns 0.0 to avoid dividing by zero.
     public double averageGrade() {
         if (students.isEmpty()) {
             return 0.0;
@@ -78,13 +85,12 @@ public class StudentManager {
         }
     }
 
-    // Purpose: increase the current grade by the received amount.
     public boolean updateGrade(int id, double increment) {
-        Student student = findStudent(id);
-
-        if (student == null || increment <= 0.0) {
-            return false;
+        if (increment <= 0.0) {
+            throw new IllegalArgumentException("Increment must be greater than zero.");
         }
+
+        Student student = findStudent(id);
 
         student.setGrade(student.getGrade() + increment);
         return true;
@@ -103,38 +109,106 @@ public class StudentManager {
         StudentManager manager = new StudentManager();
 
         System.out.println("--- Add students ---");
-        System.out.println("Add Ana (id 1): " + manager.addStudent(s1));
-        System.out.println("Add Luis (id 2): " + manager.addStudent(s2));
-        System.out.println("Add Maria (id 3): " + manager.addStudent(s3));
-        System.out.println("Add Ana (id 4): " + manager.addStudent(s4));
-        System.out.println("Add duplicate id 1: " + manager.addStudent(new Student("Pedro", 18, 6.5, 1)));
+        try {
+            System.out.println("Add Ana (id 1): " + manager.addStudent(s1));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Add Luis (id 2): " + manager.addStudent(s2));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Add Maria (id 3): " + manager.addStudent(s3));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Add Ana (id 4): " + manager.addStudent(s4));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Add duplicate id 1: " + manager.addStudent(new Student("Pedro", 18, 6.5, 1)));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println();
         System.out.println("--- List all students ---");
-        manager.listAllStudents();
+        try {
+            manager.listAllStudents();
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println();
         System.out.println("--- Find one student ---");
-        System.out.println("Student with id 1: " + manager.findStudent(1));
-        System.out.println("Student with id 99: " + manager.findStudent(99));
+        try {
+            System.out.println("Student with id 1: " + manager.findStudent(1));
+        } catch (IllegalArgumentException | StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Student with id 99: " + manager.findStudent(99));
+        } catch (IllegalArgumentException | StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println();
         System.out.println("--- Update grade ---");
-        System.out.println("Before update: " + manager.findStudent(1));
-        System.out.println("Update id 1 by +0.1: " + manager.updateGrade(1, 0.1));
-        System.out.println("After update: " + manager.findStudent(1));
-        System.out.println("Update missing student: " + manager.updateGrade(99, 0.5));
-        System.out.println("Update with invalid increment: " + manager.updateGrade(1, -0.2));
+        try {
+            System.out.println("Before update: " + manager.findStudent(1));
+        } catch (IllegalArgumentException | StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Update id 1 by +0.1: " + manager.updateGrade(1, 0.1));
+        } catch (IllegalArgumentException | StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("After update: " + manager.findStudent(1));
+        } catch (IllegalArgumentException | StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Update missing student: " + manager.updateGrade(99, 0.5));
+        } catch (IllegalArgumentException | StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Update with invalid increment: " + manager.updateGrade(1, -0.2));
+        } catch (IllegalArgumentException | StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println();
         System.out.println("--- Remove student ---");
-        System.out.println("Remove id 2: " + manager.removeStudent(2));
-        System.out.println("Remove missing id 99: " + manager.removeStudent(99));
-        manager.listAllStudents();
+        try {
+            System.out.println("Remove id 2: " + manager.removeStudent(2));
+        } catch (IllegalArgumentException | StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Remove missing id 99: " + manager.removeStudent(99));
+        } catch (IllegalArgumentException | StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            manager.listAllStudents();
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println();
         System.out.println("--- Totals and average ---");
         System.out.println("Total students: " + manager.totalStudents());
-        System.out.println("Average grade: " + manager.averageGrade());
+        try {
+            System.out.println("Average grade: " + manager.averageGrade());
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

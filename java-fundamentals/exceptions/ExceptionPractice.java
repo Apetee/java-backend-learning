@@ -34,6 +34,12 @@ public class ExceptionPractice {
         } catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
         }
+
+        try {
+            System.out.println("SearchStudent by id 1 "+practice.searchStudentMessage(5));
+        }catch ( StudentNotFoundException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public int divide(int firstNumber, int secondNumber) {
@@ -103,7 +109,6 @@ public class ExceptionPractice {
         if (id == 1) {
             return "Student with id 1 found.";
         }
-
-        throw new RuntimeException("Student not found.");
+            throw new StudentNotFoundException();
     }
 }
