@@ -1,13 +1,15 @@
 package arraylist02;
 
 import exceptions.StudentNotFoundException;
+import interfaces.StudentStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentManager {
+public class StudentManager implements StudentStorage {
     private final ArrayList<Student> students = new ArrayList<>();
 
+    @Override
     public boolean addStudent(Student newStudent) {
         if (newStudent == null) {
             throw new IllegalArgumentException("Student cannot be null.");
@@ -33,6 +35,7 @@ public class StudentManager {
         }
     }
 
+    @Override
     public boolean removeStudent(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("Id must be greater than zero.");
@@ -47,6 +50,7 @@ public class StudentManager {
         throw new StudentNotFoundException();
     }
 
+    @Override
     public Student findStudent(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("Id must be greater than zero.");
@@ -74,6 +78,7 @@ public class StudentManager {
         return total / students.size();
     }
 
+    @Override
     public void listAllStudents() {
         if (students.isEmpty()) {
             System.out.println("No students available.");
