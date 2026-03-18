@@ -1,0 +1,5 @@
+Student File I/O Summary
+Total students: 5
+Average grade: 8.26
+Generated from: students.csv
+Output file checked successfully.

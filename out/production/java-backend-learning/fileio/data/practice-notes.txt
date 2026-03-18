@@ -1,0 +1,19 @@
+Java File I/O Practice
+
+Suggested exercises:
+1. Read this whole file as a single String.
+2. Read this file line by line.
+3. Count how many lines it contains.
+4. Append one extra line written by you.
+5. Create a new output file with a short summary.
+
+Useful relative paths:
+- java-fundamentals/fileio/data/practice-notes.txt
+- java-fundamentals/fileio/data/students.csv
+- java-fundamentals/fileio/data/students-invalid.csv
+
+CSV column order for the student exercise:
+id,name,age,grade
+
+When you parse students.csv, each valid row can become a Student object.
+When you parse students-invalid.csv, practice validation and exception handling.
