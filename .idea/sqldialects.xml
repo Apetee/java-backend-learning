@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/sql-learning/queries/02_select_students.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/sql-learning/queries/03_round2.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/sql-learning/queries/04_round3.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/sql-learning/queries/05_round4.sql" dialect="PostgreSQL" />
+  </component>
+</project>

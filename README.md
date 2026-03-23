@@ -6,7 +6,7 @@ My goal is to build a strong foundation in core Java first, then progress into r
 
 ## Current Status
 
-I am currently learning Java step by step through small exercises and mini-projects.
+I am learning Java backend development step by step through small exercises, mini-projects, and now a local SQL practice environment.
 
 ### Topics already practiced
 - Java fundamentals
@@ -18,28 +18,32 @@ I am currently learning Java step by step through small exercises and mini-proje
 - Basic CRUD-like logic with collections
 - Introduction to Java Streams
 - Exceptions basics
+- Interfaces
+- Generics basics
+- Enums basics
+- Date/time API basics
+- File I/O basics
+- PostgreSQL setup with Docker
 
 ### Current focus
-I am currently practicing exceptions:
-- built-in exceptions
-- `try/catch`
-- throwing exceptions manually with `throw`
-- understanding when to use `IllegalArgumentException`
-- creating my first custom exception: `StudentNotFoundException`
+I am currently moving into SQL and data persistence:
+- working with PostgreSQL in a local Docker environment
+- querying `students`, `courses`, and `enrollments`
+- practicing `SELECT`, `WHERE`, `ORDER BY`, `INSERT`, `UPDATE`, and `DELETE`
+- preparing for `JOIN`, `GROUP BY`, and JDBC
 
 ### Next immediate step
-Apply exception handling to student-related classes and then continue with:
-- interfaces
-- generics
-- enums
-- date/time API
-- `BigDecimal`
-- file I/O
-- SQL
+Practice SQL until CRUD and joins feel natural, then continue with:
+- SQL relationships and normalization
+- `JOIN`, `COUNT`, `AVG`, and `GROUP BY`
+- JDBC
 - Maven
 - JUnit
-- JDBC
 - Spring Boot
+
+Still planned from Java core:
+- `BigDecimal`
+- `Comparable` and `Comparator`
 
 ## Learning Approach
 
@@ -58,9 +62,17 @@ java-backend-learning/
     variables01/
     arrays04/
     arraylist02/
+    interfaces/
+    generics/
+    enums/
+    dates/
+    fileio/
     hashmap/
     streams/
     exceptions/
+  sql-learning/
+    init/
+    queries/
 ```
 
 ## Exercises and What They Teach
@@ -75,6 +87,13 @@ java-backend-learning/
 | Streams | `java-fundamentals/streams/StudentAnalytics.java` | `filter`, `map`, `mapToDouble`, `average`, `sorted` |
 | Exceptions | `java-fundamentals/exceptions/ExceptionPractice.java` | `try/catch`, built-in exceptions, input validation |
 | Custom Exceptions | `java-fundamentals/exceptions/StudentNotFoundException.java` | First custom runtime exception |
+| Interfaces | `java-fundamentals/interfaces/StudentStorage.java` | Shared contract between multiple implementations |
+| Generics | `java-fundamentals/generics/Box.java` | Type parameters and reusable typed containers |
+| Enums | `java-fundamentals/enums/StudentStatus.java` | Fixed set of domain states |
+| Date/Time API | `java-fundamentals/dates/StudentRecord.java` | `LocalDate`, `LocalDateTime`, `Period`, formatting |
+| File I/O | `java-fundamentals/fileio/StudentFilePractice.java` | Reading files, CSV parsing, validation, and writing output |
+| SQL Schema | `sql-learning/init/01_schema.sql` | Tables, keys, relationships, and starter schema design |
+| SQL Practice | `sql-learning/queries/01_practice_queries.sql` | Filtering, CRUD queries, joins, and aggregates |
 
 ## Why These Topics Matter for Backend Development
 
@@ -86,6 +105,12 @@ These exercises are not isolated practice. Each one connects to real backend wor
 - HashMap practice helps understand key-based access and lookup patterns
 - streams help transform and filter data before returning API responses
 - exceptions become validation errors and not-found errors in backend applications
+- interfaces help separate contracts from implementations
+- generics help build reusable, type-safe code
+- enums model controlled business states like status values
+- date/time API is essential for timestamps, scheduling, and deadlines
+- file I/O helps prepare for imports, exports, logs, and configuration files
+- SQL turns in-memory CRUD practice into real database persistence
 
 This is the foundation for future Spring Boot applications.
 
@@ -107,6 +132,8 @@ This is the foundation for future Spring Boot applications.
 - joins
 - normalization
 - JDBC
+
+Current phase: entering SQL practice with PostgreSQL + Docker.
 
 ### Phase 3 - Java Project Structure
 - Maven
@@ -163,6 +190,12 @@ This is the foundation for future Spring Boot applications.
 - student database
 - student analytics
 - exception practice
+- interface-based student storage contract
+- generic box practice
+- enum practice
+- date/time student record practice
+- file I/O student CSV practice
+- local PostgreSQL SQL sandbox
 
 ### Planned mini-projects
 - `LibraryManager`
@@ -176,11 +209,11 @@ This is the foundation for future Spring Boot applications.
 
 If I return to this repository later, I should continue from here:
 
-1. Finish exception practice completely
-2. Replace generic `RuntimeException` with `StudentNotFoundException` where appropriate
-3. Apply exception-based thinking to `StudentManager` and `StudentDatabase`
-4. Learn interfaces and generics next
-5. Move into SQL and Maven after core Java feels stable
+1. Practice SQL daily against the `backend_learning` database
+2. Get very comfortable with `SELECT`, `WHERE`, `ORDER BY`, `INSERT`, `UPDATE`, and `DELETE`
+3. Learn joins using `students`, `courses`, and `enrollments`
+4. Move into JDBC with a `StudentRegistrationJDBC` mini-project
+5. Add Maven project structure before starting Spring Boot
 
 ## How To Continue Helping Me In Future Sessions
 
@@ -192,10 +225,11 @@ If a future conversation starts from this README, the best way to help me is:
 - let me write code myself first
 - review my code and suggest improvements
 - help me build toward Spring Boot in the correct order
+- for SQL, use the existing local PostgreSQL setup before introducing ORM tools
 
 ## Running the Exercises
 
-For now, this repository is a plain Java learning workspace.
+For now, this repository contains both Java exercises and a local SQL practice setup.
 
 Typical workflow:
 - open the project in IntelliJ IDEA
@@ -204,7 +238,14 @@ Typical workflow:
 - refactor and improve step by step
 - commit progress to GitHub
 
-Later, this repository will evolve toward Maven/Gradle-based projects.
+SQL workflow:
+- open `sql-learning/`
+- start the database with `docker compose up -d`
+- connect with DBeaver or IntelliJ Database tools
+- use host `localhost`, port `55432`, database `backend_learning`
+- run scripts from `sql-learning/queries/`
+
+Later, this repository will evolve toward Maven/Gradle-based Java database projects and then Spring Boot applications.
 
 ## Long-Term Goal
 
