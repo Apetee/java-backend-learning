@@ -30,12 +30,14 @@ I am currently moving into SQL and data persistence:
 - working with PostgreSQL in a local Docker environment
 - querying `students`, `courses`, and `enrollments`
 - practicing `SELECT`, `WHERE`, `ORDER BY`, `INSERT`, `UPDATE`, and `DELETE`
-- preparing for `JOIN`, `GROUP BY`, and JDBC
+- currently practicing `JOIN`, `GROUP BY`, `COUNT`, `HAVING`, and `LEFT JOIN`
+- learning best with one exercise at a time, hints first, and full solutions only when I am stuck
 
 ### Next immediate step
 Practice SQL until CRUD and joins feel natural, then continue with:
 - SQL relationships and normalization
 - `JOIN`, `COUNT`, `AVG`, and `GROUP BY`
+- `HAVING`, `LEFT JOIN`, and multi-table query practice
 - JDBC
 - Maven
 - JUnit
@@ -94,6 +96,7 @@ java-backend-learning/
 | File I/O | `java-fundamentals/fileio/StudentFilePractice.java` | Reading files, CSV parsing, validation, and writing output |
 | SQL Schema | `sql-learning/init/01_schema.sql` | Tables, keys, relationships, and starter schema design |
 | SQL Practice | `sql-learning/queries/01_practice_queries.sql` | Filtering, CRUD queries, joins, and aggregates |
+| SQL Practice | `sql-learning/queries/02_select_students.sql` | First manual query practice from IntelliJ / DBeaver |
 
 ## Why These Topics Matter for Backend Development
 
@@ -209,11 +212,12 @@ Current phase: entering SQL practice with PostgreSQL + Docker.
 
 If I return to this repository later, I should continue from here:
 
-1. Practice SQL daily against the `backend_learning` database
-2. Get very comfortable with `SELECT`, `WHERE`, `ORDER BY`, `INSERT`, `UPDATE`, and `DELETE`
-3. Learn joins using `students`, `courses`, and `enrollments`
-4. Move into JDBC with a `StudentRegistrationJDBC` mini-project
-5. Add Maven project structure before starting Spring Boot
+1. Keep practicing SQL daily against the `backend_learning` database
+2. Be able to write `SELECT`, `WHERE`, `ORDER BY`, `INSERT`, `UPDATE`, and `DELETE` without copying
+3. Keep practicing `JOIN`, `GROUP BY`, `COUNT`, `HAVING`, and `LEFT JOIN` using `students`, `courses`, and `enrollments`
+4. Prefer learning exercise by exercise with hints first, then skeletons, then full answers if needed
+5. Move into JDBC with a `StudentRegistrationJDBC` mini-project after SQL feels natural
+6. Add Maven project structure before starting Spring Boot
 
 ## How To Continue Helping Me In Future Sessions
 
@@ -226,6 +230,9 @@ If a future conversation starts from this README, the best way to help me is:
 - review my code and suggest improvements
 - help me build toward Spring Boot in the correct order
 - for SQL, use the existing local PostgreSQL setup before introducing ORM tools
+- for SQL, give one exercise at a time and wait for my answer before moving on
+- for SQL, prefer hints and query skeletons before giving the full solution
+- use the current tables `students`, `courses`, and `enrollments` for practice whenever possible
 
 ## Running the Exercises
 
@@ -244,6 +251,15 @@ SQL workflow:
 - connect with DBeaver or IntelliJ Database tools
 - use host `localhost`, port `55432`, database `backend_learning`
 - run scripts from `sql-learning/queries/`
+
+Current SQL environment status:
+- PostgreSQL runs locally through Docker from `sql-learning/docker-compose.yml`
+- DBeaver connection has already been tested successfully
+- IntelliJ Database tools can also be used, but may require clicking `Download Driver Files` for PostgreSQL first
+- current practice tables are:
+  - `students(id, full_name, email, age, created_at)`
+  - `courses(id, title, description, price, created_at)`
+  - `enrollments(id, student_id, course_id, enrolled_at)`
 
 Later, this repository will evolve toward Maven/Gradle-based Java database projects and then Spring Boot applications.
 
